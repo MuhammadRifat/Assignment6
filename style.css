@@ -6,6 +6,10 @@
   position: relative;
 }
 
+#message-notFound{
+  display: none;
+}
+
 .gallery-header {
   display: none;
 }

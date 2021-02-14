@@ -30,10 +30,21 @@ const showImages = (images) => {
 }
 
 const getImages = (query) => {
-  displaySpinner();
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
-    .then(data => showImages(data.hits))
+    .then(data => {
+      if(data.hits.length === 0){
+        document.getElementById('message-notFound').style.display = "block";
+        document.getElementById('message-notFound').innerText = "No Images Found";
+        document.getElementById('result-images').style.display = "none";
+      }
+      else{
+        document.getElementById('message-notFound').style.display = "none";
+        document.getElementById('result-images').style.display = "block";
+        displaySpinner();
+        showImages(data.hits);
+      }
+    })
     .catch(err => console.log(err))
 }
 
