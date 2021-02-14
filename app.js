@@ -16,6 +16,7 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // show images 
 const showImages = (images) => {
+  console.log(images);
   imagesArea.style.display = 'block';
   gallery.innerHTML = '';
   // show gallery title
@@ -30,6 +31,7 @@ const showImages = (images) => {
 }
 
 const getImages = (query) => {
+  displaySpinner();
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
     .then(data => {
@@ -37,11 +39,11 @@ const getImages = (query) => {
         document.getElementById('message-notFound').style.display = "block";
         document.getElementById('message-notFound').innerText = "No Images Found";
         document.getElementById('result-images').style.display = "none";
+        displaySpinner();
       }
       else{
         document.getElementById('message-notFound').style.display = "none";
         document.getElementById('result-images').style.display = "block";
-        displaySpinner();
         showImages(data.hits);
       }
     })
@@ -56,7 +58,6 @@ const selectItem = (event, img) => {
   if (item === -1) {
     sliders.push(img);
   } else {
-    // alert('Hey, Already added !')
     element.classList.remove('added');
     element.classList.add('not-added');
     sliders.splice(item, 1);
@@ -134,6 +135,7 @@ const displayImages = () => {
   sliders.length = 0;
 }
 
+// Submit search on enter key
 searchBox.addEventListener("keypress", function(event) {
   if(event.key === 'Enter'){
     event.preventDefault();
@@ -142,9 +144,10 @@ searchBox.addEventListener("keypress", function(event) {
 })
 
 sliderBtn.addEventListener('click', function () {
-  createSlider()
+  createSlider();
 })
 
+// For showing spinner
 const displaySpinner = () => {
   document.getElementById("spinner").classList.toggle("d-none");
 }
