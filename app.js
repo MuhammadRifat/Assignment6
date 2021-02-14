@@ -16,7 +16,6 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // show images 
 const showImages = (images) => {
-  console.log(images);
   imagesArea.style.display = 'block';
   gallery.innerHTML = '';
   // show gallery title
@@ -27,10 +26,11 @@ const showImages = (images) => {
     div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
     gallery.appendChild(div)
   })
-
+  displaySpinner();
 }
 
 const getImages = (query) => {
+  displaySpinner();
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
     .then(data => showImages(data.hits))
@@ -41,7 +41,6 @@ let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
   element.classList.add('added');
- 
   let item = sliders.indexOf(img);
   if (item === -1) {
     sliders.push(img);
@@ -49,7 +48,7 @@ const selectItem = (event, img) => {
     // alert('Hey, Already added !')
     element.classList.remove('added');
     element.classList.add('not-added');
-    sliders.pop(img);
+    sliders.splice(item, 1);
   }
 }
 var timer
@@ -116,7 +115,7 @@ const changeSlide = (index) => {
   items[index].style.display = "block"
 }
 
-function displayImages() {
+const displayImages = () => {
   document.querySelector('.main').style.display = 'none';
   clearInterval(timer);
   const search = document.getElementById('search');
@@ -124,8 +123,8 @@ function displayImages() {
   sliders.length = 0;
 }
 
-searchBox.addEventListener("keyup", function(event) {
-  if(event.keyCode === 13){
+searchBox.addEventListener("keypress", function(event) {
+  if(event.key === 'Enter'){
     event.preventDefault();
     searchBtn.click();
   }
@@ -134,3 +133,7 @@ searchBox.addEventListener("keyup", function(event) {
 sliderBtn.addEventListener('click', function () {
   createSlider()
 })
+
+const displaySpinner = () => {
+  document.getElementById("spinner").classList.toggle("d-none");
+}
