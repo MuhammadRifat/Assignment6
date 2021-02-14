@@ -141,11 +141,11 @@ searchBox.addEventListener("keypress", function(event) {
     event.preventDefault();
     searchBtn.click();
   }
-})
+});
 
 sliderBtn.addEventListener('click', function () {
   createSlider();
-})
+});
 
 // For showing spinner
 const displaySpinner = () => {
